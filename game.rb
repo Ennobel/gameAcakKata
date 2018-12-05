@@ -13,14 +13,15 @@ def randomWord(word)
 	question = Hash.new	
 
 	word.length.times do |index|
-		random << index		
+		 random << index		
 	end
-	 random = random.shuffle
-	 random.each do |randomIndex|	 	
+	random = random.shuffle
+	random.each do |randomIndex|	 	
 		 random_word << word[randomIndex] 
-	 end
-	  question[word] = random_word.join()	 
-	  return question	  
+	end
+	# retrun hash with (["word"] = randomWord)
+	question[word] = random_word.join()	 
+	return question	  
 end
 
 def checkingWord(test_case)		
@@ -29,30 +30,57 @@ def checkingWord(test_case)
 		puts "TEBAK KATA : #{val} "
 		print "JAWAB : "
 		user_input = gets.chomp		
-		user_input != key ? flag = false : flag = true						
+		user_input.casecmp(key) != 0 ? flag = false : flag = true						
 	end		
 	return flag
 end
 
-def gameOn(life)	
+def levelDesc(level)
+	case level
+		when 1
+		 	levelDesc = "EASY"
+		when 2
+			levelDesc = "HARD"
+		when 3
+			levelDesc = "IMPOSSIBLE"
+	end
+	return levelDesc
+end
+
+def gameOn(life)		
+	# checking run on windows or not
+	is_windows = (ENV['OS'] == 'Windows_NT') 			 
+
 	points = 0
 	level = 1	
+
+	#checking points for next level
 	while (life > 0)					
 		if points > 5 && points < 10
 			level = 2
 		elsif points > 10
 			level = 3
 		end
-		words = inputWord("WordsBankLevel#{level}.txt")						
+
+		words = inputWord("WordsBankLevel#{level}.txt")	
+		# getting random word
 		test_case = randomWord(words[rand(0..words.length-1)])
-		loop do
-			system "clear"
-			system "cls"
+
+		loop do								
+			# clearing command line view
+			if is_windows
+			 	system "cls"
+			else
+			 	system "clear"
+			end
+			 
 			puts "Game Tebak Kata Sederhana\n\n"
-			puts "LEVEL : #{level}"
+			puts "LEVEL : #{levelDesc(level)}"
 			puts "LIFE : #{life} POINTS : #{points} \n\n"					
+
 			flag = checkingWord(test_case)
-			if(flag == true)
+
+			if(flag)
 				puts "\nJawaban anda benar \n\n"
 				sleep(0.5)
 				points +=1
