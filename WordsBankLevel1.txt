@@ -1,0 +1,10 @@
+buku
+rumah
+lemari
+roti
+kampus
+robot
+mobil
+motor
+kulkas
+ayam
