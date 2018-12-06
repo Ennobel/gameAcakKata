@@ -23,14 +23,8 @@ class Test_case
 	return question	  
     end
 
-    def checkingWord(user_input)		
-	flag = false
-	# @test_case.each do |key,val|			
-		# puts "TEBAK KATA : #{val} "
-		# print "JAWAB : "
-		# user_input = gets.chomp		
-		user_input.casecmp(test_case.keys[0]) != 0 ? flag = false : flag = true								
-	# end			
+    def checkingWord(user_input)			
+	user_input.casecmp(test_case.keys[0]) != 0 ? flag = false : flag = true								
 	return flag
 end
 end
