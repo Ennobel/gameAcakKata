@@ -1,3 +1,5 @@
+require_relative 'Test_case'
+
 def inputWord(file)
 	words = Array.new
 	data_read = IO.readlines(file)
@@ -6,33 +8,6 @@ def inputWord(file)
 		words << word.chomp;
 	end
 	return words
-end
-
-def randomWord(word)
-	random,random_word = Array.new,Array.new
-	question = Hash.new	
-
-	word.length.times do |index|
-		 random << index		
-	end
-	random = random.shuffle
-	random.each do |randomIndex|	 	
-		 random_word << word[randomIndex] 
-	end
-	# retrun hash with (["word"] = randomWord)
-	question[word] = random_word.join()	 
-	return question	  
-end
-
-def checkingWord(test_case)		
-	flag = false
-	test_case.each do |key,val|			
-		puts "TEBAK KATA : #{val} "
-		print "JAWAB : "
-		user_input = gets.chomp		
-		user_input.casecmp(key) != 0 ? flag = false : flag = true						
-	end		
-	return flag
 end
 
 def levelDesc(level)
@@ -62,9 +37,7 @@ def gameOn(life)
 			level = 3
 		end
 
-		words = inputWord("WordsBankLevel#{level}.txt")	
-		# getting random word
-		test_case = randomWord(words[rand(0..words.length-1)])
+		testCase = Test_case.new (inputWord("WordsBankLevel#{level}.txt"))
 
 		loop do								
 			# clearing command line view
@@ -77,9 +50,13 @@ def gameOn(life)
 			puts "Game Tebak Kata Sederhana\n\n"
 			puts "LEVEL : #{levelDesc(level)}"
 			puts "LIFE : #{life} POINTS : #{points} \n\n"					
-
-			flag = checkingWord(test_case)
-
+			
+			testCase.test_case.each do |key,val|
+				puts "TEBAK KATA : #{val} "
+				print "JAWAB : "
+			end								
+			flag = testCase.checkingWord(gets.chomp)	
+						
 			if(flag)
 				puts "\nJawaban anda benar \n\n"
 				sleep(0.5)
@@ -98,7 +75,6 @@ def gameOn(life)
 	end
 	return points
 end
-
 # life = 3
 point = gameOn(3)
 puts "Nilai akhir anda : #{point}"
